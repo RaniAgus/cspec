@@ -2,24 +2,24 @@
 #include <stdbool.h>
 #include <cspecs/cspec.h>
 
-context (ejemplo) {
+context (example) {
 
-    describe("Describe de ejemplo", {
+    describe("Hello world", {
 
-        it("true debería ser igual a true", {
+        it("true should be true", {
             should_bool(true) be equal to(true);
         });
 
-        it("true no debería ser igual a false", {
+        it("true shouldn't be false", {
             should_bool(true) not be equal to(false);
         });
 
-        it("este test va a fallar porque 10 no es igual a 11", {
+        it("this test will fail because 10 is not equal to 11", {
             should_int(10) be equal to(11);
         });
 
-        skip("este test deberia fallar porque \"Hola\" no es \"Chau\"", {
-            should_string("Hola") be equal to("Chau");
+        skip("this test will fail because \"Hello\" is not \"Bye\"", {
+            should_string("Hello") be equal to("Bye");
         });
 
     });
