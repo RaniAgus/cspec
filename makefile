@@ -1,8 +1,8 @@
 RM=rm -rf
 CC=gcc
 
-C_SRCS=$(shell find . -iname "*.c" | tr '\n' ' ')
-H_SRCS=$(shell find . -iname "*.h" | tr '\n' ' ')
+C_SRCS=$(shell find ./cspecs -iname "*.c" | tr '\n' ' ')
+H_SRCS=$(shell find ./cspecs -iname "*.h" | tr '\n' ' ')
 
 OBJS=$(C_SRCS:./%.c=release/%.o)
 
@@ -35,6 +35,13 @@ debug: all
 clean:
 	$(RM) release
 
+# Run tests
+test: release/libcspecs.so
+	$(CC) -o "$$$$" $(wildcard examples/*.c) -Lrelease -lcspecs -I.; \
+	./$$$$; \
+	$(RM) $$$$;
+
+# Install and uninstall
 install: all
 ifeq ($(UNAME), Darwin)
 	$(SUDO) cp release/libcspecs.so /usr/lib

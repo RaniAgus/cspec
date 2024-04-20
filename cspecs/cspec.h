@@ -60,14 +60,12 @@
 
         #define context(name)     __attribute__((constructor)) void cspec_context_##name()
 
-        #define describe(desc)    __describe(desc, ({ void __$__()
-        #define it(desc)          __it      (desc, ({ void __$__()
-        #define skip(desc)        __skip    (desc, ({ void __$__()
+        #define describe(desc, ...)    __describe(desc, ({ void __$__() __VA_ARGS__ __$__;}))
+        #define it(desc, ...)          __it      (desc, ({ void __$__() __VA_ARGS__ __$__;}))
+        #define skip(desc, ...)        __skip    (desc, ({ void __$__() __VA_ARGS__ __$__;}))
 
-        #define after             __after (({ void __$__()
-        #define before            __before(({ void __$__()
-
-        #define end               __$__;}));
+        #define after(...)             __after (({ void __$__() __VA_ARGS__ __$__;}))
+        #define before(...)            __before(({ void __$__() __VA_ARGS__ __$__;}))
 
     // ---------------------------------------------------------------------------
     // ----- MACROS SHOULD -----

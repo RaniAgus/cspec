@@ -32,25 +32,25 @@ This is just a small example of how to use CSPEC
 
 context (example) {
 
-    describe("Hello world") {
+    describe("Hello world", {
 
-        it("true should be true") {
+        it("true should be true", {
             should_bool(true) be equal to(true);
-        } end
+        });
 
-        it("true shouldn't be false") {
+        it("true shouldn't be false", {
             should_bool(true) not be equal to(false);
-        } end
+        });
 
-        it("this test will fail because 10 is not equal to 11") {
+        it("this test will fail because 10 is not equal to 11", {
             should_int(10) be equal to(11);
-        } end
+        });
 
-        skip("this test will fail because \"Hello\" is not \"Bye\"") {
+        skip("this test will fail because \"Hello\" is not \"Bye\"", {
             should_string("Hello") be equal to("Bye");
-        } end
+        });
 
-    } end
+    });
 
 }
 ```
@@ -78,9 +78,9 @@ NOTE: You should always have at the top of your test file, as the first level of
 Each scenario is written inside a `describe`, declared in this way:
 
 ```c
-describe("Brief description of the scenario") {
+describe("Brief description of the scenario", {
     /* Here goes the code */
-} end
+});
 ```
 
 We can have multiple scenarios on each context. Again, inside a `describe` you can write functions and call them in your tests, include files (.h), define macros and write the tests using `it`.
@@ -92,9 +92,9 @@ We can have multiple scenarios on each context. Again, inside a `describe` you c
 Each `it` represents a test.
 
 ```c
-it("Brief description of the test") {
+it("Brief description of the test", {
     /* Here goes the test code, along with the assertions */
-} end
+});
 ```
 
 Inside it, you have to write the assertions about the behaviour you want to test. In order to do that cspec has a set of basic operations to do that, the `should` statements.
@@ -154,17 +154,17 @@ Sometimes the scenarios, initial configurations, or deallocation of the variable
 ==== before
 
 ```c
-before {
+before({
     /* Code to execute before each test */
-} end
+});
 ```
 
 ==== after
 
 ```c
-after {
+after({
     /* Code to execute after each test */
-} end
+});
 ```
 
 NOTE: As stated before, the context and describe are executed sequentially, that's why it's __very important__ to remember that the `before` and `after` must be declared in the beginning of the `describe` scenario, even before the first test.

@@ -10,25 +10,25 @@ Mini framework para hacer [BDD](http://en.wikipedia.org/wiki/Behavior-driven_dev
 
 context (ejemplo) {
 
-    describe("Describe de ejemplo") {
+    describe("Describe de ejemplo", {
 
-        it("true debería ser igual a true") {
+        it("true debería ser igual a true", {
             should_bool(true) be equal to(true);
-        } end
+        });
 
-        it("true no debería ser igual a false") {
+        it("true no debería ser igual a false", {
             should_bool(true) not be equal to(false);
-        } end
+        });
 
-        it("este test va a fallar porque 10 no es igual a 11") {
+        it("este test va a fallar porque 10 no es igual a 11", {
             should_int(10) be equal to(11);
-        } end
+        });
 
-        skip("este test deberia fallar porque \"Hola\" no es \"Chau\"") {
+        skip("este test deberia fallar porque \"Hola\" no es \"Chau\"", {
             should_string("Hola") be equal to("Chau");
-        } end
+        });
 
-    } end
+    });
 
 }
 ```
@@ -99,9 +99,9 @@ Dentro de un **contexto** puedo escribir funciones y llamarlas desde mis tests, 
 Cada escenario se escribe dentro de un **describe**, de esta forma:
 
 ```C
-describe("Breve descripción del escenario") {
+describe("Breve descripción del escenario", {
     /* Acá va a el código */
-} end
+});
 ```
 
 Nuevamente, dentro de un **describe** puedo escribir funciones y llamarlas desde mis test, puedo incluir archivos (.h), definir macros y escribir los test - **its**.
@@ -111,9 +111,9 @@ Nuevamente, dentro de un **describe** puedo escribir funciones y llamarlas desde
 Cada **it** es un test, propiamente dicho.
 
 ```C
-it("Breve descripción del test") {
+it("Breve descripción del test", {
     /* Acá va a el código, con sus respectivas aserciones */
-} end
+});
 ```
 
 Dentro de mismo, debo realizar las aserciones sobre el comportamiento que quiero probar. Para ello, CSpecs, cuenta con operaciones básicas para realizarlas - **shoulds**
@@ -169,16 +169,16 @@ Hay veces que entre los test se repiten escenarios o configuraciones iniciales y
 
 #### before
 ```C
-before {
+before({
     /* codigo para ejecutar antes de cada it */
-} end
+});
 ```
 
 #### after
 ```C
-after {
+after({
     /* codigo para ejecutar después de cada it */
-} end
+});
 ```
 
 **Nota:** Tener en cuenta que, como se ha mencionado anteriormente, el describe se ejecuta de forma secuencial, por eso es __muy importante__ recordar que el **before** y **after** deben estar al principio del **describe** (antes del primer **it**)
@@ -192,80 +192,80 @@ after {
 
 context (ejemplo_completo) {
 
-    describe("Describe 1") {
+    describe("Describe 1", {
 
         int *a = NULL,
              b;
 
-        before {
+        before({
             puts("before 1");
             a = malloc(sizeof(int));
             *a = 10;
             b = 20;
-        } end
+        });
 
-        after {
+        after({
             puts("after 1");
             free(a);
             a = NULL;
-        } end
+        });
 
-        it("*a debería ser 10 y b debería ser 20") {
+        it("*a debería ser 10 y b debería ser 20", {
             should_int(*a) be equal to(10);
             should_int(b) be equal to(20);
-        } end
+        });
 
-        describe("Describe 2") {
+        describe("Describe 2", {
 
-            before {
+            before({
                 puts("before 2");
                 *a = 30;
                 b = 15;
-            } end
+            });
 
-            after {
+            after({
                 puts("after 2");
                 free(a);
                 a = NULL;
-            } end
+            });
 
-            it("*a debería ser 30 y b debería ser 15") {
+            it("*a debería ser 30 y b debería ser 15", {
                 should_int(*a) be equal to(30);
                 should_int(b) be equal to(15);
-            } end
+            });
 
-            describe("Describe 3") {
+            describe("Describe 3", {
 
-                before {
+                before({
                     puts("before 3");
                     b = 150;
-                } end
+                });
 
-                after {
+                after({
                     puts("after 3");
                     free(a);
                     a = NULL;
-                } end
+                });
 
-                it("*a deberia ser 30 y b debería ser 150") {
+                it("*a deberia ser 30 y b debería ser 150", {
                     should_int(*a) be equal to(30);
                     should_int(b) be equal to(150);
-                } end
+                });
 
-            } end
+            });
 
-        } end
+        });
 
-        describe("Describe 4") {
+        describe("Describe 4", {
 
-            it("*a debería ser 10 y b debería ser 20") {
+            it("*a debería ser 10 y b debería ser 20", {
                 should_int(*a) be equal to(10);
                 should_int(b) be equal to(20);
-            } end
+            });
 
-        } end
+        });
 
-    } end
+    });
 
 }
 ```

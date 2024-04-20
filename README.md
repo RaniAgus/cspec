@@ -10,25 +10,25 @@
 
 context (example) {
 
-    describe("Hello world") {
+    describe("Hello world", {
 
-        it("true should be true") {
+        it("true should be true", {
             should_bool(true) be equal to(true);
-        } end
+        });
 
-        it("true shouldn't be false") {
+        it("true shouldn't be false", {
             should_bool(true) not be equal to(false);
-        } end
+        });
 
-        it("this test will fail because 10 is not equal to 11") {
+        it("this test will fail because 10 is not equal to 11", {
             should_int(10) be equal to(11);
-        } end
+        });
 
-        skip("this test will fail because \"Hello\" is not \"Bye\"") {
+        skip("this test will fail because \"Hello\" is not \"Bye\"", {
             should_string("Hello") be equal to("Bye");
-        } end
+        });
 
-    } end
+    });
 
 }
 ```
@@ -87,9 +87,9 @@ Inside a `context`, you can write functions and call them in your tests, you can
 Each scenario is written inside a `describe`, declared in this way:
 
 ```C
-describe("Brief description of the scenario") {
+describe("Brief description of the scenario", {
     /* Here goes the code */
-} end
+});
 ```
 
 Again, inside a `describe` you can write functions and call them in your tests, include files (.h), define macros and write the tests using `it`.
@@ -99,9 +99,9 @@ Again, inside a `describe` you can write functions and call them in your tests, 
 Each `it` represents a test.
 
 ```C
-it("Brief description of the test") {
+it("Brief description of the test", {
     /* Here goes the test code, along with the assertions */
-} end
+});
 ```
 
 Inside it, you have to write the assertions about the behaviour you want to test. In order to do that cspec has a set of basic operations to do that, the `should` statements.
@@ -157,16 +157,16 @@ Sometimes the scenarios, initial configurations, or deallocation of the variable
 
 #### before
 ```C
-before {
+before({
     /* Code to execute before each test */
-} end
+});
 ```
 
 #### after
 ```C
-after {
+after({
     /* Code to execute after each test */
-} end
+});
 ```
 
 **Note:** As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the `before` and `after` must be declared in the beggining of the `describe` scenario, even before the first test.
@@ -181,80 +181,80 @@ after {
 
 context (complete_example) {
 
-    describe("Describe 1") {
+    describe("Describe 1", {
 
         int *a = NULL,
              b;
 
-        before {
+        before({
             puts("before 1");
             a = malloc(sizeof(int));
             *a = 10;
             b = 20;
-        } end
+        });
 
-        after {
+        after({
             puts("after 1");
             free(a);
             a = NULL;
-        } end
+        });
 
-        it("*a should be 10 and b should be 20") {
+        it("*a should be 10 and b should be 20", {
             should_int(*a) be equal to(10);
             should_int(b) be equal to(20);
-        } end
+        });
 
-        describe("Describe 2") {
+        describe("Describe 2", {
 
-            before {
+            before({
                 puts("before 2");
                 *a = 30;
                 b = 15;
-            } end
+            });
 
-            after {
+            after({
                 puts("after 2");
                 free(a);
                 a = NULL;
-            } end
+            });
 
-            it("*a should be 30 and b should be 15") {
+            it("*a should be 30 and b should be 15", {
                 should_int(*a) be equal to(30);
                 should_int(b) be equal to(15);
-            } end
+            });
 
-            describe("Describe 3") {
+            describe("Describe 3", {
 
-                before {
+                before({
                     puts("before 3");
                     b = 150;
-                } end
+                });
 
-                after {
+                after({
                     puts("after 3");
                     free(a);
                     a = NULL;
-                } end
+                });
 
-                it("*a should be 30 and b should be 150") {
+                it("*a should be 30 and b should be 150", {
                     should_int(*a) be equal to(30);
                     should_int(b) be equal to(150);
-                } end
+                });
 
-            } end
+            });
 
-        } end
+        });
 
-        describe("Describe 4") {
+        describe("Describe 4", {
 
-            it("*a should be 10 and b should be 20") {
+            it("*a should be 10 and b should be 20", {
                 should_int(*a) be equal to(10);
                 should_int(b) be equal to(20);
-            } end
+            });
 
-        } end
+        });
 
-    } end
+    });
 
 }
 ```
