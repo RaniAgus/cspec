@@ -37,8 +37,8 @@ clean:
 
 # Run tests
 test: release/libcspecs.so
-	$(CC) -o "$$$$" $(wildcard examples/*.c) -Lrelease -lcspecs -I.; \
-	./$$$$; \
+	$(CC) -o "$$$$" $(wildcard examples/*.c) -Wl,-rpath,release -Lrelease -lcspecs -I.; \
+	./$$$$ $(ARGS); \
 	$(RM) $$$$;
 
 # Install and uninstall
