@@ -1,15 +1,23 @@
 CMAKE := cmake
 
 BUILD_DIR := build
-INSTALL_PREFIX := /usr
+INSTALL_PREFIX := /usr/local
 
-.PHONY: all configure build install uninstall clean
+.PHONY: all release debug configure build install uninstall clean
 
-all: configure build
+all: release build
+
+release: BUILD_TYPE := Release
+release: configure
+
+debug: BUILD_TYPE := Debug
+debug: configure
 
 configure:
 	@mkdir -p $(BUILD_DIR)
-	$(CMAKE) -S . -B $(BUILD_DIR) -DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX)
+	$(CMAKE) -S . -B $(BUILD_DIR) \
+		-DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX) \
+		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
 
 build:
 	$(CMAKE) --build $(BUILD_DIR)
@@ -23,7 +31,7 @@ uninstall:
 	    xargs rm -fv < $(BUILD_DIR)/install_manifest.txt; \
 	    echo "Uninstalled files listed in install_manifest.txt"; \
 	else \
-	    echo "No install_manifest.txt found. Run 'make install' first."; \
+	    echo "No install_manifest.txt found. Skipping uninstall..."; \
 	fi
 
 clean:
