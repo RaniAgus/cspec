@@ -1,51 +1,30 @@
-RM=rm -rf
-CC=gcc
+CMAKE := cmake
 
-C_SRCS=$(shell find . -iname "*.c" | tr '\n' ' ')
-H_SRCS=$(shell find . -iname "*.h" | tr '\n' ' ')
+BUILD_DIR := build
+INSTALL_PREFIX := /usr
 
-OBJS=$(C_SRCS:./%.c=release/%.o)
+.PHONY: all configure build install uninstall clean
 
-UNAME=$(shell uname)
+all: configure build
 
-ifneq ($(shell id -un),root)
-SUDO=sudo
-endif
+configure:
+	@mkdir -p $(BUILD_DIR)
+	$(CMAKE) -S . -B $(BUILD_DIR) -DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX)
 
-# Clean and compile .so
-all: release/libcspecs.so
+build:
+	$(CMAKE) --build $(BUILD_DIR)
 
-release/cspecs:
-	mkdir -p release/cspecs/
-
-release/libcspecs.so: release/cspecs $(OBJS)
-	$(CC) -shared -o "release/libcspecs.so" $(OBJS)
-
-release/cspecs/%.o: cspecs/%.c
-	$(CC) -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
-
-release/cspecs/collections/%.o: cspecs/collections/%.c
-	$(CC) -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
-
-# Add debug parameters and compile
-debug: CC += -DDEBUG -g
-debug: all
-
-# Clean release files
-clean:
-	$(RM) release
-
-install: all
-ifeq ($(UNAME), Darwin)
-	$(SUDO) cp release/libcspecs.so /usr/lib
-	$(SUDO) ditto $(H_SRCS) /usr/include
-else
-	$(SUDO) cp -u release/libcspecs.so /usr/lib
-	$(SUDO) cp --parents -u $(H_SRCS) /usr/include
-endif
+install:
+	$(CMAKE) --install $(BUILD_DIR)
 
 uninstall:
-	rm -f /usr/lib/libcspecs.so
-	rm -rf /usr/include/cspecs
+	@echo "Uninstalling cspecs..."
+	@if [ -f $(BUILD_DIR)/install_manifest.txt ]; then \
+	    xargs rm -fv < $(BUILD_DIR)/install_manifest.txt; \
+	    echo "Uninstalled files listed in install_manifest.txt"; \
+	else \
+	    echo "No install_manifest.txt found. Run 'make install' first."; \
+	fi
 
-.PHONY: all clean install uninstall
+clean:
+	@rm -rf $(BUILD_DIR)

@@ -60,7 +60,8 @@ context (example) {
 ### How do I install it?
 1. `git clone https://github.com/mumuki/cspec.git`
 2. `cd cspec`
-3. `make install`
+3. `make`
+4. `sudo make install`
 
 ### Now, what should I do?
 * Write your C code
