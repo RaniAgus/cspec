@@ -1,4 +1,4 @@
-FROM alpine:3.15.2
+FROM alpine:3
 
 RUN apk add build-base libc6-compat
 
@@ -6,6 +6,6 @@ WORKDIR /cspec/
 
 COPY . .
 
-RUN make install
+RUN make release && make install
 
 CMD [ "/bin/sh" ]
