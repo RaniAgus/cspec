@@ -1,7 +1,12 @@
 CMAKE := cmake
 
 BUILD_DIR := build
+
+ifeq ($(UNAME), Darwin)
 INSTALL_PREFIX := /usr/local
+else
+INSTALL_PREFIX := /usr
+endif
 
 .PHONY: all release debug configure build install uninstall clean
 
